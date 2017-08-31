@@ -18,10 +18,10 @@ public class Collision {
      * @return true se há colisão ou false, do contrário.
      */
     public static final boolean circlesOverlap(Circle c1, Circle c2) {
-        Vector2 vectorX = new Vector2(c1.x, c1.y);
-        Vector2 vectorY = new Vector2(c2.x, c2.y);
+        Vector2 vector1 = new Vector2(c1.x, c1.y);
+        Vector2 vector2 = new Vector2(c2.x, c2.y);
         
-        if(vectorX.dst(vectorY) <= c1.radius + c2.radius)
+        if(vector1.dst(vector2) <= c1.radius + c2.radius)
             return true;
         return false;
     }
@@ -35,6 +35,12 @@ public class Collision {
      * @return true se há colisão ou false, do contrário.
      */
     public static final boolean rectsOverlap(Rectangle r1, Rectangle r2) {
+        Vector2 vectorXAxis = new Vector2(r1.x - r2.x, r1.y - r2.y);
+        Vector2 vectorYAxis = new Vector2(r1.x - r2.x, r1.x + r1.height - r2.x - r2.height);
+        
+        if(vectorXAxis.len() < Math.max(r1.width, r2.width))
+            if(vectorYAxis.len() < Math.max(r1.height, r2.height))
+                return true;
         return false;
     }
 }
