@@ -2,6 +2,7 @@ package br.cefetmg.games.collision;
 
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 
 /**
  * Utilitário para verificação de colisão.
@@ -17,6 +18,11 @@ public class Collision {
      * @return true se há colisão ou false, do contrário.
      */
     public static final boolean circlesOverlap(Circle c1, Circle c2) {
+        Vector2 vectorX = new Vector2(c1.x, c1.y);
+        Vector2 vectorY = new Vector2(c2.x, c2.y);
+        
+        if(vectorX.dst(vectorY) <= c1.radius + c2.radius)
+            return true;
         return false;
     }
 
