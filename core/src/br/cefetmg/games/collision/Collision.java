@@ -43,4 +43,26 @@ public class Collision {
                 return true;
         return false;
     }
+    
+    /**
+     * Verifica se um círculo e um retângulo colidem.
+     * @param c círculo
+     * @param r retângulo
+     * @return true se há colisão, false caso contrário
+     */
+    public static final boolean rectAndCircleOverlap(Circle c, Rectangle r) {
+        Vector2 vectorConnectingCenters = new Vector2(c.x - (r.x + r.width/2), c.y - (r.y + r.height/2));
+        Vector2 vectorXAxisRectangle = new Vector2((r.x + r.width/2) - r.x, 0);
+        Vector2 vectorYAxisRectangle = new Vector2(0, (r.y + r.height) - (r.y + r.height/2));
+        
+        float distanceXBetweenCenters = (new Vector2((r.x + r.width/2) - c.x, 0)).len();
+        float distanceYBetweenCenters = (new Vector2(0, (r.y + r.height/2) - c.y)).len();
+        
+        Vector2 vectorClampedX = vectorXAxisRectangle.clamp(0, distanceXBetweenCenters);
+        Vector2 vectorClampedY = vectorYAxisRectangle.clamp(0, distanceYBetweenCenters);
+        
+        if(vectorClampedY.dst(c.x, c.y) <= r.width + c.radius) return true;
+        if(vectorClampedX.dst(c.x, c.y) <= r.height + c.radius) return true;
+        return false;
+    }
 }
