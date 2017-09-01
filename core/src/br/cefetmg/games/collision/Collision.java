@@ -50,19 +50,22 @@ public class Collision {
      * @param r retângulo
      * @return true se há colisão, false caso contrário
      */
-    public static final boolean rectAndCircleOverlap(Circle c, Rectangle r) {
-        Vector2 vectorConnectingCenters = new Vector2(c.x - (r.x + r.width/2), c.y - (r.y + r.height/2));
-        Vector2 vectorXAxisRectangle = new Vector2((r.x + r.width/2) - r.x, 0);
+    public static final boolean rectAndCircleOverlap(Rectangle r, Circle c) {
+        //Vetor que liga os centros das figuras geométricas
+        Vector2 vectorConnectingCenters = new Vector2((r.x + r.width/2) - c.x, (r.y + r.height/2) - c.y);
+        //Vector interno ao retângulo, paralelo ao eixo Y e de comprimento ALTURA/2
         Vector2 vectorYAxisRectangle = new Vector2(0, (r.y + r.height) - (r.y + r.height/2));
         
-        float distanceXBetweenCenters = (new Vector2((r.x + r.width/2) - c.x, 0)).len();
+        //Distância unidimensional entre as coordenadas Y do retângulo e do círculo
         float distanceYBetweenCenters = (new Vector2(0, (r.y + r.height/2) - c.y)).len();
         
-        Vector2 vectorClampedX = vectorXAxisRectangle.clamp(0, distanceXBetweenCenters);
-        Vector2 vectorClampedY = vectorYAxisRectangle.clamp(0, distanceYBetweenCenters);
+        //Limita-se o tamanho do vetor 'vectorYAxisRectangle' garantindo que ele está dentro do retângulo & 
+        //não ultrapassa a altura em relação ao centro do círculo
+        Vector2 vectorClampedY = vectorYAxisRectangle.clamp(0, Math.min(distanceYBetweenCenters, r.height/2));
         
-        if(vectorClampedY.dst(c.x, c.y) <= r.width + c.radius) return true;
-        if(vectorClampedX.dst(c.x, c.y) <= r.height + c.radius) return true;
+        //Se houver colisão, a subtração de vetores abaixo resultará em um vetor paralelo ao eixo X
+        if(vectorConnectingCenters.sub(vectorClampedY).len() <= r.height/2 + c.radius) return true; //Utliza-se altura pois o retângulo do tiro está em pé
+        
         return false;
     }
 }
