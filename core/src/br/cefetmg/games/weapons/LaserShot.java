@@ -60,7 +60,8 @@ public class LaserShot implements Shot {
         // Laser vs Vortex: rect vs rect
         // Laser vs Ship: nada
         if (other instanceof Asteroid || other instanceof VortexShot) {
-            return Collision.rectsOverlap(bounds, other.getMinimumBoundingRectangle());
+//            return Collision.rectsOverlap(bounds, other.getMinimumBoundingRectangle());
+            return Collision.rectAndCircleOverlap(bounds, other.getMinimumEnclosingBall());
         } else {
             return false;
         }
